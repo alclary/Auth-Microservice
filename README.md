@@ -1,7 +1,7 @@
 # Auth-Microservice
 This application represents a small ZeroMQ-based authentication microservice. This tiny authentication server will listen on a socket bound to a given port number, for incoming messages contain simple JSON objects in the format `{"username": [username], "password": [password]}`. The JSON object received by the server will be validated against a JSON schema definition of that format. 
 
-Assuming the provided object has know validation error, the given case-sensitive username will be checked against the server's connected DB. If a username match is found, the case-sensitive password will be checked against DB password record for the found user. If the match of both keys is successfull, a simple string message response of `valid` will be sent by the server. Should either of those matches fail, of the aforementioned data validation fail, a simple string message response of `invalid` will be sent by the server. 
+Assuming the provided object has know validation error, the given case-sensitive username will be checked against the server's connected DB. If a username match is found, the case-sensitive password will be checked against DB password record for the found user. If the match of both keys is successful, a simple string message response of `valid` will be sent by the server. Should either of those matches fail, of the aforementioned data validation fail, a simple string message response of `invalid` will be sent by the server. Please see the `test_client.py` file in the repo for an example of the data validation in action. 
 
 At this time, and as requested by my CS361 partner, the microservice supports a static JSON database, provided as a single file containing an array of JSON object records of users. See the `static_db.json` file in this repo for an example of the expected format. User objects may contain any number of keys, but they *must* contain a `username` and a `password` key. 
 
@@ -26,7 +26,7 @@ For an elaboration of currently available command line arguments:
 To utilize the service with a static JSON db: 
 ```python auth_server.py --json db_filename.json```
 
-## Sending Data
+## Sending and Receiving Data
 
 The contents of data requests sent to the service must be sent strictly in the following format (with values in brackets replaced with **strings** wrapped in double-quotes):
 `{"username": [username], "password": [password]}`
@@ -51,4 +51,21 @@ reply = socket.recv_string()
 print(reply)
 ```
 
-Notably, it is not mandatory to utilize ZeroMQ's send_string() and recv_string(), but it does simplify encoding and serialization within the code. Please see the [ZMQ Sock Class](https://pyzmq.readthedocs.io/en/latest/api/zmq.html#zmq.Socket) documentation for more details (i.e. see recv_ and send_ class methods). 
+Notably, it is not mandatory to utilize ZeroMQ's send_string() and recv_string(), but it does simplify encoding and serialization within the code. Please see the [ZMQ Sock Class](https://pyzmq.readthedocs.io/en/latest/api/zmq.html#zmq.Socket) documentation for more details (i.e. see recv_ and send_ class methods). For example, to avoid serialization of JSON objects (i.e. stringifying), an approach like the following could be used:
+
+```python 
+import zmq
+import json
+
+context = zmq.Context()
+socket = context.socket(zmq.REQ)
+socket.connect("tcp://localhost:8080")
+
+data = {"username": "julioJones", "password": "falcons"}
+
+# Send data to server; python dictionary -> JSON object
+socket.send_json(data)
+# Receive server reply as byte object; requires decode to convert to string
+reply = socket.recv()
+print(reply.decode())
+```
