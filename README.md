@@ -51,7 +51,7 @@ reply = socket.recv_string()
 print(reply)
 ```
 
-Notably, it is not mandatory to utilize ZeroMQ's send_string() and recv_string(), but it does simplify encoding and serialization within the code. Please see the [ZMQ Sock Class](https://pyzmq.readthedocs.io/en/latest/api/zmq.html#zmq.Socket) documentation for more details (i.e. see recv_ and send_ class methods). For example, to avoid serialization of JSON objects (i.e. stringifying), an approach like the following could be used:
+Notably, it is not mandatory to utilize ZeroMQ's send_string() and recv_string(), but it does simplify encoding and serialization within the code. Please see the [ZMQ Socket Class](https://pyzmq.readthedocs.io/en/latest/api/zmq.html#zmq.Socket) documentation for more details (i.e. see recv_ and send_ class methods). For example, to avoid serialization of JSON objects (i.e. stringifying), an approach like the following could be used:
 
 ```python 
 import zmq
