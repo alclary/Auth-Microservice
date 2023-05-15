@@ -1,8 +1,10 @@
 import argparse
-import zmq
 import json
 import signal
-from jsonschema import validate
+import zmq                          # pip install pyzmq
+import mysql                        # pip install mysql
+import mysql.connector              # pip install mysql-connector-python
+from jsonschema import validate     # pip install jsonschema
 
 # Constants
 PORT = 8080
@@ -29,7 +31,7 @@ interrupted = False
 
 def signal_handler(signum, frame):
     """A handler function to alter a global variable that will assist in
-        interrupting the threaded socket listener. 
+        interrupting the threaded socket listener.
     """
     global interrupted
     interrupted = True
@@ -37,7 +39,7 @@ def signal_handler(signum, frame):
 
 def server_up(db_middleware, json_db=None):
     """Brings up the ZMQ socket listener; behavior contingent on supplied
-        middleware function. 
+        middleware function.
 
     Args:
         db_middleware (func): middleware function to determine behavior on
