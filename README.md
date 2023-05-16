@@ -6,13 +6,13 @@ Assuming the provided object produces no validation error, the given case-sensit
 
 The microservice supports querying against a live mySQL database or a static JSON database---- the latter provided as a single file containing an array of JSON objects describing users. See the `static_db.json` file in this repo for an example of the expected format. User objects in either type of database may contain any number of attributes/keys, but they _must_ contain `username` and `password` attributes/keys.
 
-By default, the microservice python file does not require any addition CLI arguments and will intend to use a live SQL database. However, it will expect a `.env` file to be located in the same directory as the `auth_server.py` file, containing the following variables, one to a line, in order to connect to the SQL DB: `MYSQL_HOST=, MYSQL_USER=, MYSQL_PASSWORD=, MYSQL_DATABASE=`. DB details can be entered directly after the equal sign, without quotes or wrapped in quotes. Spaces are permitted before and after the equal sign. The `.env_example` file contains an example of the requires vars, without assignments.
+By default, the microservice python file does not require any CLI arguments and will try to connect to an SQL database. However, it will expect a `.env` file to be located in the same directory as the `auth_server.py` file. The .env file should contain the following variables, one to a line: `MYSQL_HOST=, MYSQL_USER=, MYSQL_PASSWORD=, MYSQL_DATABASE=`. DB details can be entered directly after the equal sign, without quotes or wrapped in quotes. Spaces are permitted before and after the equal sign. The `.env_example` file contains an example of the required variables.
 
 Alternatively, to utilize a static JSON db, a JSON file can be provided via CLI flags `-j` or `--json`.
 
 ## Dependencies
 
-To get started, ensure that the `pyzmq`,`mysql`,`mysql-connector-python`, `python-dotenv`, and `jsonschema`, packages are installed to your environment or system:
+To get started, ensure that the pyzmq, mysql, mysql-connector-python, python-dotenv, and jsonschema packages are installed to your environment or system:
 `pip install pyzmq, mysql, mysql-connector-python, python-dotenv, jsonschema`
 
 ## Configuration
@@ -76,4 +76,5 @@ print(reply.decode())
 ```
 
 ## UML
+
 ![UML Diagram](UML/auth_server_UML.png?raw=true)
