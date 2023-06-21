@@ -74,7 +74,3 @@ socket.send_json(data)
 reply = socket.recv()
 print(reply.decode())
 ```
-
-## UML
-
-![UML Diagram](UML/auth_server_UML.png?raw=true)
